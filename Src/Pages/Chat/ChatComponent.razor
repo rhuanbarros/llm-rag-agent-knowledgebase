@@ -1,0 +1,30 @@
+@using MudBlazor
+
+<div class="d-flex flex-grow-1 flex-row">
+    <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+        
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+            @* @foreach (var mensagem in mensagens)
+            { *@
+                <div class="d-flex flex-row my-4">
+                    <div class="mr-4">
+                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                    </div>
+                    <div>
+                        <MudText Typo="Typo.body1">AI Agent</MudText>
+                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@DateTime.Now.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">Mensagem escrita</MudText>
+                    </div>
+                </div>
+            @* } *@
+        </div>
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+            <MudTextField T="string" Placeholder="Digite sua pergunta..."DisableUnderLine="true" Class="mt-n2 mx-4"
+                          @bind-Value="inputPesquisa" For="@(()=> inputPesquisa)" />
+            
+            <MudButton OnClick="OnClickPesquisa" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Enviar</MudButton>
+        </MudPaper>
+
+    </MudPaper>
+
+</div>
