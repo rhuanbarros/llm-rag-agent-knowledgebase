@@ -1,0 +1,47 @@
+@using MudBlazor
+
+
+<div class='d-flex flex-column justify-start align-center gap-2' style='width: 100% !important' COLUNA>
+
+    <div class='d-flex flex-row justify-center align-center gap-1 pb-4' style='width: 100% !important' LINHA>
+        <MudTextField @bind-Value="inputPesquisa" Label="Digite a sua pesquisa" Variant="Variant.Outlined"
+            Margin="Margin.Dense" OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickPesquisa(); })' />
+
+        <MudIconButton Icon="@Icons.Material.Filled.Search" aria-label="delete" Color="Color.Primary"
+            Variant="Variant.Outlined" Size="Size.Medium" OnClick="OnClickPesquisa"></MudIconButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Chat" aria-label="delete" Color="Color.Primary"
+            Variant="Variant.Outlined" Size="Size.Medium"></MudIconButton>
+    </div>
+
+    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:63vh; overflow:scroll;">
+
+
+        @* @if (searchResults == null)
+        {
+            if (primeiraPesquisa)
+            {
+                <p>Faça uma pesquisa para aparecer os resultados aqui.</p>
+            }
+            else
+            {
+                <p>Carregando</p>
+            }
+        }
+        else if (searchResults.Count == 0)
+        {
+            <p>Essa pesquisa retornou 0 itens.</p>
+        }
+        else
+        {
+            <MudList Clickable="true" DisableGutters="false">
+                @foreach (SearchResult result in searchResults)
+                {
+                    <MudListItem Text="@GetTruncatedContent(result.Text)" Icon="@Icons.Material.Filled.Bookmark" />
+                }
+            </MudList>
+        } *@
+    </div>
+
+
+
+</div>
