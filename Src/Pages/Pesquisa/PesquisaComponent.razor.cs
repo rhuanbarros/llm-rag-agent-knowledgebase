@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Components;
+using Procurador.Web.Src.Services.Base;
 
 namespace Procurador.Web.Src.Pages.Pesquisa;
 
 public partial class PesquisaComponent : ComponentBase
 {
-//     [Inject] IClient Client { get; set; }
+    [Inject] IFrontendClient FrontendClient { get; set; }
 
     public string inputPesquisa { get; set; } = "";
     public bool primeiraPesquisa {get;set;} = true;
@@ -13,23 +14,23 @@ public partial class PesquisaComponent : ComponentBase
     {
     }
 
-    // ICollection<SearchResult> searchResults;
+    ICollection<Doc> searchResults;
     public async Task OnClickPesquisa()
     {
-        // if(!string.IsNullOrEmpty(inputPesquisa))
-        // {
-        //     primeiraPesquisa = false;
+        if(!string.IsNullOrEmpty(inputPesquisa))
+        {
+            primeiraPesquisa = false;
 
-        //     QueryParams queryParams = new()
-        //     {
-        //         Collection = "",
-        //         Query = inputPesquisa,
-        //         // Alpha = 0.5,
-        //         // Limit = 10
-        //     };
+            QueryParams queryParams = new()
+            {
+                Collection = "base-de-conhecimento-sem-split",
+                Query = inputPesquisa,
+                // Alpha = 0.5,
+                // Limit = 10
+            };
 
-        //     searchResults = await Client.Process_query_process_query__postAsync(queryParams);
-        // }
+            searchResults = await FrontendClient.Process_query_process_query__postAsync(queryParams);
+        }
     }
 
     string GetTruncatedContent(string content)

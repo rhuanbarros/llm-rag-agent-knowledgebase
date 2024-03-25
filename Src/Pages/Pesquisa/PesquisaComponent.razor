@@ -1,4 +1,5 @@
 @using MudBlazor
+@using Procurador.Web.Src.Services.Base
 
 
 <div class='d-flex flex-column justify-start align-center gap-2' style='width: 100% !important' COLUNA>
@@ -16,7 +17,7 @@
     <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:63vh; overflow:scroll;">
 
 
-        @* @if (searchResults == null)
+         @if (searchResults == null)
         {
             if (primeiraPesquisa)
             {
@@ -34,12 +35,12 @@
         else
         {
             <MudList Clickable="true" DisableGutters="false">
-                @foreach (SearchResult result in searchResults)
+                @foreach (Doc result in searchResults)
                 {
                     <MudListItem Text="@GetTruncatedContent(result.Text)" Icon="@Icons.Material.Filled.Bookmark" />
                 }
             </MudList>
-        } *@
+        }
     </div>
 
 
