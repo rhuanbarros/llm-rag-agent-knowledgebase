@@ -6,8 +6,8 @@
         <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
             @foreach (var message in ChatHistory)
             {
-                <div class="d-flex flex-row my-4">
-                    <div class="mr-4">
+                <div class="d-flex flex-row@(message.Type == "AI"?"":"-reverse") my-4">
+                    <div class="mx-4">
                         @if(message.Type == "AI")
                         {
                             <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
@@ -17,7 +17,13 @@
                         }
                     </div>
                     <div>
-                        <MudText Typo="Typo.body1">AI Agent</MudText>
+                        @* @if(message.Type == "AI")
+                        {
+                            <MudText Typo="Typo.body1">AI Agent</MudText>
+                        } else
+                        {
+                            <MudText Typo="Typo.body1">Você</MudText>
+                        } *@
                         @* <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@DateTime.Now.ToString("dd MMM, yyyy hh:mm tt")</MudText> *@
                         <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Content</MudText>
                     </div>
