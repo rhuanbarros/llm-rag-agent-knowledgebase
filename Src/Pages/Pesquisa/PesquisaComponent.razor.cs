@@ -14,14 +14,14 @@ public partial class PesquisaComponent : ComponentBase
     {
     }
 
-    ICollection<Doc> searchResults;
+    ICollection<DocModel> searchResults;
     public async Task OnClickPesquisa()
     {
         if(!string.IsNullOrEmpty(inputPesquisa))
         {
             primeiraPesquisa = false;
 
-            QueryParams queryParams = new()
+            QueryParamsModel queryParams = new()
             {
                 Collection = "base-de-conhecimento-sem-split",
                 Query = inputPesquisa,

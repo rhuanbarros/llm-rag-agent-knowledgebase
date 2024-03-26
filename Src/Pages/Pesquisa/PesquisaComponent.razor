@@ -35,9 +35,9 @@
         else
         {
             <MudList Clickable="true" DisableGutters="false">
-                @foreach (Doc result in searchResults)
+                @foreach (DocModel result in searchResults)
                 {
-                    <MudListItem Text="@GetTruncatedContent(result.Text)" Icon="@Icons.Material.Filled.Bookmark" />
+                    <MudListItem Text="@GetTruncatedContent(result.Content)" Icon="@Icons.Material.Filled.Bookmark" />
                 }
             </MudList>
         }

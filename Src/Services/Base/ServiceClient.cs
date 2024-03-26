@@ -28,7 +28,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<Doc> body);
+        System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<DocModel> body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -36,7 +36,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<Doc> body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<DocModel> body, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -71,7 +71,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<Doc> body)
+        public virtual System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<DocModel> body)
         {
             return Ingest_data_ingest_data__postAsync(collection, body, System.Threading.CancellationToken.None);
         }
@@ -82,7 +82,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<Doc> body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<object> Ingest_data_ingest_data__postAsync(string collection, System.Collections.Generic.IEnumerable<DocModel> body, System.Threading.CancellationToken cancellationToken)
         {
             if (collection == null)
                 throw new System.ArgumentNullException("collection");
@@ -293,7 +293,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Doc>> Process_query_process_query__postAsync(QueryParams body);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Process_query_process_query__postAsync(QueryParamsModel body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -301,14 +301,14 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Doc>> Process_query_process_query__postAsync(QueryParams body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Process_query_process_query__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Chat
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Message>> Chat_chat__postAsync(Chat body);
+        System.Threading.Tasks.Task<MessageModel> Chat_chat__postAsync(System.Collections.Generic.IEnumerable<MessageModel> body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -316,7 +316,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Message>> Chat_chat__postAsync(Chat body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MessageModel> Chat_chat__postAsync(System.Collections.Generic.IEnumerable<MessageModel> body, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -351,7 +351,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Doc>> Process_query_process_query__postAsync(QueryParams body)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Process_query_process_query__postAsync(QueryParamsModel body)
         {
             return Process_query_process_query__postAsync(body, System.Threading.CancellationToken.None);
         }
@@ -362,7 +362,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Doc>> Process_query_process_query__postAsync(QueryParams body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Process_query_process_query__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -410,7 +410,7 @@ namespace Procurador.Web.Src.Services.Base
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Doc>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<DocModel>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -452,7 +452,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Message>> Chat_chat__postAsync(Chat body)
+        public virtual System.Threading.Tasks.Task<MessageModel> Chat_chat__postAsync(System.Collections.Generic.IEnumerable<MessageModel> body)
         {
             return Chat_chat__postAsync(body, System.Threading.CancellationToken.None);
         }
@@ -463,7 +463,7 @@ namespace Procurador.Web.Src.Services.Base
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Message>> Chat_chat__postAsync(Chat body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MessageModel> Chat_chat__postAsync(System.Collections.Generic.IEnumerable<MessageModel> body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -511,7 +511,7 @@ namespace Procurador.Web.Src.Services.Base
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Message>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<MessageModel>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -661,37 +661,15 @@ namespace Procurador.Web.Src.Services.Base
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.4.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Chat
-    {
-        [Newtonsoft.Json.JsonProperty("ChatHistory", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<Message> ChatHistory { get; set; } = new System.Collections.ObjectModel.Collection<Message>();
-
-        [Newtonsoft.Json.JsonProperty("Message", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Message { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.4.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Doc
+    public partial class DocModel
     {
         [Newtonsoft.Json.JsonProperty("Filename", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Filename { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("Text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Content", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Text { get; set; }
+        public string Content { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -722,15 +700,15 @@ namespace Procurador.Web.Src.Services.Base
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.4.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Message
+    public partial class MessageModel
     {
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Type { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("Messge", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Content", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Messge { get; set; }
+        public string Content { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -744,7 +722,7 @@ namespace Procurador.Web.Src.Services.Base
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.4.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class QueryParams
+    public partial class QueryParamsModel
     {
         [Newtonsoft.Json.JsonProperty("collection", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
