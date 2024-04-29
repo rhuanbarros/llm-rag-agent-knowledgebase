@@ -33,10 +33,10 @@
         <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
             <MudTextField T="string" Placeholder="Digite sua pergunta..."DisableUnderLine="true" Class="mt-n2 mx-4"
                 @bind-Value="inputChat" For="@(()=> inputChat)" 
-                OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickPesquisa(); })' 
+                OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickEnviarMensagem(); })' 
                 />
             
-            <MudButton OnClick="OnClickPesquisa" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Enviar</MudButton>
+            <MudButton OnClick="OnClickEnviarMensagem" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Enviar</MudButton>
         </MudPaper>
 
     </MudPaper>

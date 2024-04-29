@@ -23,7 +23,7 @@ public partial class PesquisaComponent : ComponentBase
 
             QueryParamsModel queryParams = new()
             {
-                Collection = "base-de-conhecimento-sem-split",
+                Collection = "teste1",
                 Query = inputPesquisa,
                 // Alpha = 0.5,
                 // Limit = 10

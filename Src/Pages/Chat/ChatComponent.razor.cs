@@ -11,7 +11,7 @@ public partial class ChatComponent : ComponentBase
 
     protected List<MessageModel> ChatHistory = new();
 
-    public async Task OnClickPesquisa()
+    public async Task OnClickEnviarMensagem()
     {
         if(!string.IsNullOrEmpty(inputChat))
         {
