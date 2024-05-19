@@ -16,24 +16,53 @@
 
     <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:63vh; overflow:scroll;">
 
-
          @if (searchResults == null)
         {
             if (primeiraPesquisa)
             {
-                <p>Faça uma pesquisa para aparecer os resultados aqui.</p>
+                <div class="d-flex flex-row my-4">
+                    <div class="mx-4">
+                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                    </div>
+                    <div>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">Faça uma pesquisa para aparecer os resultados aqui.</MudText>
+                    </div>
+                </div>
             }
             else
             {
                 <p>Carregando</p>
+                <MudSkeleton />
             }
         }
         else if (searchResults.Count == 0)
         {
-            <p>Essa pesquisa retornou 0 itens.</p>
+            <div class="d-flex flex-row my-4">
+                <div class="mx-4">
+                    <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                </div>
+                <div>
+                    <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">
+                        Essa pesquisa retornou 0 itens.
+                    </MudText>
+                </div>
+            </div>
         }
         else
         {
+            <div class="d-flex flex-row my-4">
+                <div class="mx-4">
+                    <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                </div>
+                <div>
+                    <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">
+                        Os documentos abaixo falam sobre...
+                    </MudText>
+                </div>
+            </div>
+
+            <MudDivider />
+
             <MudList Clickable="true" DisableGutters="false">
                 @foreach (DocModel result in searchResults)
                 {
