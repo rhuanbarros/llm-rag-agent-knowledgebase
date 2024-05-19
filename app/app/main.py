@@ -16,6 +16,8 @@ import logging
 import sys
 
 
+from .ingest import ingest
+
 
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -50,7 +52,7 @@ app.add_middleware(
 
 @app.post("/ingest_data_folder/", tags=["Data management"])
 async def ingest_data_folder(folder_path: str, collection: str):
-    print("foi")
+    ingest.teste()
     return "foi"
 
 
