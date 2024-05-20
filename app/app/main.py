@@ -24,7 +24,7 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
 os.environ["LANGCHAIN_PROJECT"] = f"Procurador API"
 
-logging.basicConfig(level=logging.DEBUG,  # Define o nível de log
+logging.basicConfig(level=logging.INFO,  # Define o nível de log
                     format='%(asctime)s - %(levelname)s - %(message)s',  # Define o formato da mensagem de log
                     stream=sys.stdout)  # Define a saída do log para stdout
 # filename='app.log',  # Define o arquivo onde os logs serão gravados
@@ -51,9 +51,8 @@ app.add_middleware(
 )
 
 @app.post("/ingest_data_folder/", tags=["Data management"])
-async def ingest_data_folder(folder_path: str, collection: str):
-    ingest.teste()
-    return "foi"
+async def ingest_data_folder(folder_path: str, index_name: str):
+    return ingest.ingest_path(folder_path, index_name, logging)
 
 
 if __name__ == "__main__":
