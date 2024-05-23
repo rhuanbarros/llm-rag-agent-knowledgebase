@@ -1,3 +1,4 @@
+import logging
 from app.models import DocModel, QueryParamsModel
 from app.vectorstore import VectorStoreService
 
@@ -6,6 +7,7 @@ from injector import inject
 class SearchService():
     @inject
     def __init__(self, vectorStoreService: VectorStoreService):
+        logging.info('SearchService instantiated')
         self.vectorStoreService = vectorStoreService
 
     def conver_doc_to_DocModel_batch(self, results: list):
@@ -17,6 +19,7 @@ class SearchService():
         return searchResultsList
 
     def search_semantic(self, query_params: QueryParamsModel ):
+        logging.info('SearchService search_semantic')
         results = self.vectorStoreService.search_semantic(query_params)
         return self.conver_doc_to_DocModel_batch(results)
     
