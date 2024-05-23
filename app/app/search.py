@@ -15,7 +15,10 @@ class SearchService():
         for result in results:
             # TODO: put metadata
             doc = DocModel(Content=result.page_content,
-                           Metadata=result.metadata)
+                           Source=str(result.metadata['source']),
+                           Page=str(result.metadata['page_number']),
+                           Filetype=str(result.metadata['filetype']),
+                           )
             searchResultsList.append(doc)
         return searchResultsList
 

@@ -7,8 +7,11 @@ class QueryParamsModel(BaseModel):
     type: str
 
 class DocModel(BaseModel):
-    Metadata: Optional[Dict[str, str]] = None
+    # Metadata: Optional[Dict[str, str]] = None
     Content: str
+    Source: str
+    Page: str
+    Filetype: str
 
 class MessageModel(BaseModel):
     Type: str
