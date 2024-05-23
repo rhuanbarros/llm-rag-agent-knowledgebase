@@ -23,20 +23,22 @@ public partial class PesquisaComponent : ComponentBase
 
             QueryParamsModel queryParams = new()
             {
-                Collection = "qdrant_teste1",
+                Index_name = "index2",
                 Query = inputPesquisa,
                 // Alpha = 0.5,
                 // Limit = 10
             };
 
-            searchResults = await FrontendClient.Process_query_process_query__postAsync(queryParams);
+            searchResults = await FrontendClient.Search_semantic_search_semantic__postAsync(queryParams);
         }
     }
 
     string GetTruncatedContent(string content)
     {
-        if (content.Length > 200)
-            return content.Substring(0, 200) + "...";
+        var length = 600;
+
+        if (content.Length > length)
+            return content.Substring(0, length) + "...";
         else
             return content;
     }
