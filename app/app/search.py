@@ -23,3 +23,13 @@ class SearchService():
         results = self.vectorStoreService.search_semantic(query_params)
         return self.conver_doc_to_DocModel_batch(results)
     
+    def search_keyword(self, query_params: QueryParamsModel ):
+        logging.info('SearchService search_keyword')
+        results = self.vectorStoreService.search_keyword(query_params)
+        return self.conver_doc_to_DocModel_batch(results)
+    
+    def search_hybrid(self, query_params: QueryParamsModel ):
+        logging.info('SearchService search_hybrid')
+        results = self.vectorStoreService.search_hybrid(query_params)
+        return self.conver_doc_to_DocModel_batch(results)
+    

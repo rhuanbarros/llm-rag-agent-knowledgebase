@@ -1,6 +1,6 @@
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from injector import Injector
 from fastapi_injector import attach_injector, Injected
@@ -61,9 +61,19 @@ app.add_middleware(
 async def ingest_data_folder(folder_path: str, index_name: str, ingestService: IngestService = Injected(IngestService) ):
     return ingestService.ingest_path(folder_path, index_name)
 
-@app.post("/search_semantic/", response_model=List[DocModel], tags=["Frontend"])
-async def search_semantic(query_params: QueryParamsModel, searchService: SearchService = Injected(SearchService)):
-    return searchService.search_semantic(query_params)
+@app.post("/search/", response_model=List[DocModel], tags=["Frontend"])
+async def search(query_params: QueryParamsModel, searchService: SearchService = Injected(SearchService)):
+    if query_params.type == 'semantic':
+        return searchService.search_semantic(query_params)
+    elif query_params.type == 'keyword':
+        return searchService.search_keyword(query_params)
+    elif query_params.type == 'hybrid':
+        return searchService.search_hybrid(query_params)
+    else:
+        raise HTTPException(status_code=400, detail="QueryParamsModel.Type should be a valid type.")
+        
+
+
 
 @app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
 async def chat(ChatHistory: List[MessageModel]):
