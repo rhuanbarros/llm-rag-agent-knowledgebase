@@ -20,6 +20,7 @@ import logging
 import sys
 
 
+from app.agent import Agent
 from app.search import SearchService
 from app.models import *
 from app.ingest import IngestService
@@ -61,16 +62,27 @@ app.add_middleware(
 async def ingest_data_folder(folder_path: str, index_name: str, ingestService: IngestService = Injected(IngestService) ):
     return ingestService.ingest_path(folder_path, index_name)
 
-@app.post("/search/", response_model=List[DocModel], tags=["Frontend"])
-async def search(query_params: QueryParamsModel, searchService: SearchService = Injected(SearchService)):
-    if query_params.type == 'semantic':
-        return searchService.search_semantic(query_params)
-    elif query_params.type == 'keyword':
-        return searchService.search_keyword(query_params)
-    elif query_params.type == 'hybrid':
-        return searchService.search_hybrid(query_params)
+@app.post("/search/", response_model=SearchResultModel, tags=["Frontend"])
+async def search(
+    query_params: QueryParamsModel, 
+    searchService: SearchService = Injected(SearchService), 
+    agent: Agent = Injected(Agent) ):
+
+    if query_params.Type == 'semantic':
+        docs = searchService.search_semantic(query_params)
+    elif query_params.Type == 'keyword':
+        docs = searchService.search_keyword(query_params)
+    elif query_params.Type == 'hybrid':
+        docs = searchService.search_hybrid(query_params)
     else:
         raise HTTPException(status_code=400, detail="QueryParamsModel.Type should be a valid type.")
+    
+    if query_params.Generate_answer:
+        answer = agent.summary_chain(docs)
+    else:
+        answer = "Não gerado resposta"
+
+    return SearchResultModel(Results=docs, Generated_answer=answer)
         
 
 

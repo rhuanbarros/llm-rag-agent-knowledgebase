@@ -62,21 +62,21 @@ class WeaviteVectorProvider(VectorStoreService):
         return WeaviateVectorStore(weaviate_client, index_name, "text", embedding=self.embeddingsProvider)
     
     def search_semantic_mmr(self, query_params: QueryParamsModel):
-        vector_store = self.get_vectorstore(query_params.index_name)
+        vector_store = self.get_vectorstore(query_params.Index_name)
         retriever = vector_store.as_retriever(search_type="mmr")
-        return retriever.invoke(query_params.query)
+        return retriever.invoke(query_params.Query)
         
 
     def search_semantic(self, query_params: QueryParamsModel):
-        vector_store = self.get_vectorstore(query_params.index_name)
-        return vector_store.similarity_search(query_params.query, alpha=1)
+        vector_store = self.get_vectorstore(query_params.Index_name)
+        return vector_store.similarity_search(query_params.Query, alpha=1)
 
     def search_keyword(self, query_params: QueryParamsModel):
-        vector_store = self.get_vectorstore(query_params.index_name)
-        return vector_store.similarity_search(query_params.query, alpha=0)
+        vector_store = self.get_vectorstore(query_params.Index_name)
+        return vector_store.similarity_search(query_params.Query, alpha=0)
     
     def search_hybrid(self, query_params: QueryParamsModel):
-        vector_store = self.get_vectorstore(query_params.index_name)
-        return vector_store.similarity_search(query_params.query, alpha=0.5)
+        vector_store = self.get_vectorstore(query_params.Index_name)
+        return vector_store.similarity_search(query_params.Query, alpha=0.5)
         
 

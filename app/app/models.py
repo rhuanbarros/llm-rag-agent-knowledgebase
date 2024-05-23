@@ -2,9 +2,11 @@ from pydantic import BaseModel
 from typing import Dict, Optional, Tuple
 
 class QueryParamsModel(BaseModel):
-    index_name: str
-    query: str
-    type: str
+    Index_name: str
+    Query: str
+    Type: str
+    Generate_answer: bool
+
 
 class DocModel(BaseModel):
     # Metadata: Optional[Dict[str, str]] = None
@@ -16,3 +18,7 @@ class DocModel(BaseModel):
 class MessageModel(BaseModel):
     Type: str
     Content: str
+
+class SearchResultModel(BaseModel):
+    Results: list[DocModel]
+    Generated_answer: str

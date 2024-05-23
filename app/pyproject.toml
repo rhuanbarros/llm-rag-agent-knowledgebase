@@ -20,6 +20,7 @@ langgraph = "^0.0.50"
 tavily-python = "^0.3.3"
 weaviate-client = "^4.6.2"
 fastapi-injector = "^0.5.4"
+langchain-text-splitters = "^0.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
