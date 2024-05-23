@@ -90,8 +90,8 @@ class Ingest():
         
         embeddings = self.get_embedings()
 
+        # if we need to change the vectore store, we can just chenge this 3 lines
         weaviate_client = self.get_weaviate_basic_client()
-
         from langchain_weaviate.vectorstores import WeaviateVectorStore
         vector_store = WeaviateVectorStore.from_documents(documents, embeddings, client=weaviate_client, index_name=index_name)
 
