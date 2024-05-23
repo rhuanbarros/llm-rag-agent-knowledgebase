@@ -72,7 +72,13 @@
             <MudList Clickable="true" DisableGutters="false">
                 @foreach (DocModel result in searchResults)
                 {
-                    <MudListItem Text="@GetTruncatedContent(result.Content)" Icon="@Icons.Material.Filled.Bookmark" />
+                    
+                    <MudListItem Icon="@Icons.Material.Filled.Bookmark" >
+                        @* @GetDocsFormated(result) *@
+                        @GetTruncatedContent(result.Content)
+                        <br>
+                        Fonte: @result.Source; Página: @result.Page; Tipo de arquivo: @result.Filetype;
+                    </MudListItem>
                 }
             </MudList>
         }

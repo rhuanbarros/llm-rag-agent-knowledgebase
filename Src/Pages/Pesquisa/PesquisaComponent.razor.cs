@@ -46,4 +46,9 @@ public partial class PesquisaComponent : ComponentBase
         else
             return content;
     }
+
+    string GetDocsFormated(DocModel result)
+    {
+        return GetTruncatedContent(result.Content)+"<br>"+@result.Source;
+    }
 }
