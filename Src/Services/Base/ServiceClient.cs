@@ -290,19 +290,19 @@ namespace Procurador.Web.Src.Services.Base
     public partial interface IFrontendClient
     {
         /// <summary>
-        /// Search Semantic
+        /// Search
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_semantic_search_semantic__postAsync(QueryParamsModel body);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_search__postAsync(QueryParamsModel body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Search Semantic
+        /// Search
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_semantic_search_semantic__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_search__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Chat
@@ -350,22 +350,22 @@ namespace Procurador.Web.Src.Services.Base
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <summary>
-        /// Search Semantic
+        /// Search
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_semantic_search_semantic__postAsync(QueryParamsModel body)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_search__postAsync(QueryParamsModel body)
         {
-            return Search_semantic_search_semantic__postAsync(body, System.Threading.CancellationToken.None);
+            return Search_search__postAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Search Semantic
+        /// Search
         /// </summary>
         /// <returns>Successful Response</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_semantic_search_semantic__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DocModel>> Search_search__postAsync(QueryParamsModel body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -385,8 +385,8 @@ namespace Procurador.Web.Src.Services.Base
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "search_semantic/"
-                    urlBuilder_.Append("search_semantic/");
+                    // Operation Path: "search/"
+                    urlBuilder_.Append("search/");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -733,6 +733,10 @@ namespace Procurador.Web.Src.Services.Base
         [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Query { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Type { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

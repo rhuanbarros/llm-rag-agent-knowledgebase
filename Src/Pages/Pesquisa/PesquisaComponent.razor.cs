@@ -10,8 +10,11 @@ public partial class PesquisaComponent : ComponentBase
     public string inputPesquisa { get; set; } = "";
     public bool primeiraPesquisa {get;set;} = true;
 
+    public string SelectedOptionSearch { get; set; }
+
     protected override async Task OnParametersSetAsync()
     {
+        SelectedOptionSearch = "hybrid";
     }
 
     ICollection<DocModel> searchResults;
@@ -25,11 +28,12 @@ public partial class PesquisaComponent : ComponentBase
             {
                 Index_name = "index2",
                 Query = inputPesquisa,
+                Type = SelectedOptionSearch
                 // Alpha = 0.5,
                 // Limit = 10
             };
 
-            searchResults = await FrontendClient.Search_semantic_search_semantic__postAsync(queryParams);
+            searchResults = await FrontendClient.Search_search__postAsync(queryParams);
         }
     }
 

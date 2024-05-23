@@ -4,6 +4,12 @@
 
 <div class='d-flex flex-column justify-start align-center gap-2' style='width: 100% !important' COLUNA>
 
+    <MudRadioGroup @bind-Value="@SelectedOptionSearch">
+        <MudRadio Value="@("semantic")" Color="Color.Primary">Semântica</MudRadio>
+        <MudRadio Value="@("keyword")" Color="Color.Secondary">Palavra-chave</MudRadio>
+        <MudRadio Value="@("hybrid")">Híbrida</MudRadio>
+    </MudRadioGroup>
+
     <div class='d-flex flex-row justify-center align-center gap-1 pb-4' style='width: 100% !important' LINHA>
         <MudTextField @bind-Value="inputPesquisa" Label="Digite a sua pesquisa" Variant="Variant.Outlined"
             Margin="Margin.Dense" OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickPesquisa(); })' />
