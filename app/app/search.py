@@ -14,7 +14,8 @@ class SearchService():
         searchResultsList = []
         for result in results:
             # TODO: put metadata
-            doc = DocModel(Content=result.page_content)
+            doc = DocModel(Content=result.page_content,
+                           Metadata=result.metadata)
             searchResultsList.append(doc)
         return searchResultsList
 
