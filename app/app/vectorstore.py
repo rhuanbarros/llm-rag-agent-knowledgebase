@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from app.models import QueryParamsModel
 from app.embeddings import EmbeddingsService
 
 from injector import inject
@@ -7,6 +8,22 @@ from injector import inject
 class VectorStoreService(ABC):
     @abstractmethod
     def index_docs(self, documents, embeddings, index_name: str):
+        pass
+    
+    @abstractmethod
+    def search_semantic_mmr(self, query_params: QueryParamsModel):
+        pass
+
+    @abstractmethod
+    def search_semantic(self, query_params: QueryParamsModel):
+        pass
+
+    @abstractmethod
+    def search_keyword(self, query_params: QueryParamsModel):
+        pass
+    
+    @abstractmethod
+    def search_hybrid(self, query_params: QueryParamsModel):
         pass
 
 # TODO: pass this when binding
@@ -36,3 +53,28 @@ class WeaviteVectorProvider(VectorStoreService):
         weaviate_client = self.get_weaviate_basic_client()
         from langchain_weaviate.vectorstores import WeaviateVectorStore
         vector_store = WeaviateVectorStore.from_documents(documents,  self.embeddingsProvider, client=weaviate_client, index_name=index_name)
+
+    def get_vectorstore(self, index_name):
+        from langchain_weaviate.vectorstores import WeaviateVectorStore
+        weaviate_client = self.get_weaviate_basic_client()
+        return WeaviateVectorStore(weaviate_client, index_name, "text", embedding=self.embeddingsProvider)
+    
+    def search_semantic_mmr(self, query_params: QueryParamsModel):
+        vector_store = self.get_vectorstore(query_params.index_name)
+        retriever = vector_store.as_retriever(search_type="mmr")
+        return retriever.invoke(query_params.query)
+        
+
+    def search_semantic(self, query_params: QueryParamsModel):
+        vector_store = self.get_vectorstore(query_params.index_name)
+        return vector_store.similarity_search(query_params.query, alpha=1)
+
+    def search_keyword(self, query_params: QueryParamsModel):
+        vector_store = self.get_vectorstore(query_params.index_name)
+        return vector_store.similarity_search(query_params.query, alpha=0)
+    
+    def search_hybrid(self, query_params: QueryParamsModel):
+        vector_store = self.get_vectorstore(query_params.index_name)
+        return vector_store.similarity_search(query_params.query, alpha=0.5)
+        
+

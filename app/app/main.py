@@ -20,6 +20,8 @@ import logging
 import sys
 
 
+from app.search import SearchService
+from app.models import *
 from app.ingest import IngestService
 from app.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
 from app.vectorstore import VectorStoreService, WeaviteVectorProvider
@@ -58,6 +60,14 @@ app.add_middleware(
 @app.post("/ingest_data_folder/", tags=["Data management"])
 async def ingest_data_folder(folder_path: str, index_name: str, ingestService: IngestService = Injected(IngestService) ):
     return ingestService.ingest_path(folder_path, index_name)
+
+@app.post("/search_semantic/", response_model=List[DocModel], tags=["Frontend"])
+async def search_semantic(query_params: QueryParamsModel, searchService: SearchService = Injected(SearchService)):
+    return searchService.search_semantic(query_params)
+
+@app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
+async def chat(ChatHistory: List[MessageModel]):
+    pass
 
 
 # inj = Injector()
