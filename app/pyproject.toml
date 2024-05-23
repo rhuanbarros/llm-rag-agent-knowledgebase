@@ -19,6 +19,7 @@ tiktoken = "^0.7.0"
 langgraph = "^0.0.50"
 tavily-python = "^0.3.3"
 weaviate-client = "^4.6.2"
+fastapi-injector = "^0.5.4"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,6 +1,10 @@
 import uvicorn
 
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
+
+from injector import Injector
+from fastapi_injector import attach_injector, Injected
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from operator import itemgetter
@@ -16,8 +20,9 @@ import logging
 import sys
 
 
-from app.ingest import ingestService
-
+from app.ingest import IngestService
+from app.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
+from app.vectorstore import VectorStoreService, WeaviteVectorProvider
 
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -51,9 +56,16 @@ app.add_middleware(
 )
 
 @app.post("/ingest_data_folder/", tags=["Data management"])
-async def ingest_data_folder(folder_path: str, index_name: str):
-    return ingestService.ingest_path(folder_path, index_name, logging)
+async def ingest_data_folder(folder_path: str, index_name: str, ingestService: IngestService = Injected(IngestService) ):
+    return ingestService.ingest_path(folder_path, index_name)
 
+
+# inj = Injector()
+inj = Injector(auto_bind=True)
+inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
+inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
+
+attach_injector(app, inj)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

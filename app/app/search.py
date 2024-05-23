@@ -1,10 +1,7 @@
 # from app.embeddings import embeddingsService
 
-# class Search():
+# class SearchService():
 
 #     def search_semantic(query: str):
 
 
-
-
-# search = Search()

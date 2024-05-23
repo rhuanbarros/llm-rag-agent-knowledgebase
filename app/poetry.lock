@@ -888,6 +888,21 @@ typer = ">=0.12.3"
 standard = ["fastapi", "uvicorn[standard] (>=0.15.0)"]
 
 [[package]]
+name = "fastapi-injector"
+version = "0.5.4"
+description = "python-injector integration for FastAPI"
+optional = false
+python-versions = ">=3.8,<3.13"
+files = [
+    {file = "fastapi_injector-0.5.4-py3-none-any.whl", hash = "sha256:a53612ccf957485a27d710bd9a21c2d0d9c367ad0acf097a913c88296e5016f2"},
+    {file = "fastapi_injector-0.5.4.tar.gz", hash = "sha256:a161fbeb73a1d577ecdfbad4da75c754facbfac6a63fd615f027e5426098cacd"},
+]
+
+[package.dependencies]
+fastapi = ">=0.70.0"
+injector = ">=0.19.0"
+
+[[package]]
 name = "filelock"
 version = "3.14.0"
 description = "A platform independent file lock."
@@ -1598,6 +1613,20 @@ files = [
     {file = "idna-3.7-py3-none-any.whl", hash = "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"},
     {file = "idna-3.7.tar.gz", hash = "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"},
 ]
+
+[[package]]
+name = "injector"
+version = "0.21.0"
+description = "Injector - Python dependency injection framework, inspired by Guice"
+optional = false
+python-versions = "*"
+files = [
+    {file = "injector-0.21.0-py2.py3-none-any.whl", hash = "sha256:3942c5e4c501d390d5ad1b8d7d486ef93b844934afeeb17211acb6c4ca29eeb4"},
+    {file = "injector-0.21.0.tar.gz", hash = "sha256:919eb6b9f96f40bf98fda34c79762b217bd1544d9adc35805ff2948e92356c9c"},
+]
+
+[package.extras]
+dev = ["black (==23.3.0)", "build (==0.10.0)", "check-manifest (==0.49)", "click (==8.1.3)", "coverage (==7.2.7)", "exceptiongroup (==1.1.1)", "iniconfig (==2.0.0)", "mypy (==1.4.1)", "mypy-extensions (==1.0.0)", "packaging (==23.1)", "pathspec (==0.11.1)", "platformdirs (==3.8.0)", "pluggy (==1.2.0)", "pyproject-hooks (==1.0.0)", "pytest (==7.4.0)", "pytest-cov (==4.1.0)", "tomli (==2.0.1)", "typing-extensions (==4.7.0)"]
 
 [[package]]
 name = "intel-openmp"
@@ -6422,4 +6451,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "7c5a13d8525160ab944731c28aec11f3aecec8be9e9931028034509ff006218c"
+content-hash = "379925070c956a591e67d3914a7eab1abe69cf3c5f29b6ac62130f46823b0c39"

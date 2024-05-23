@@ -1,12 +1,19 @@
+import logging
 from fastapi import HTTPException, status
-from app.embeddings import embeddingsService
-from app.vectorstore_weavite import weaviateService
 
-VECTORE_STORE = 'weaviate'
-
+from app.embeddings import EmbeddingsService
+from app.vectorstore import VectorStoreService
 
 
-class Ingest():
+from injector import inject
+
+class IngestService():
+    @inject
+    # def __init__(self, embeddingsService: EmbeddingsService, vectorStoreService: VectorStoreService):
+        # self.embeddingsService = embeddingsService
+    def __init__(self, vectorStoreService: VectorStoreService):
+        self.vectorStoreService = vectorStoreService
+
     def get_langchain_docs(self, elements, filename):
         from unstructured.chunking.title import chunk_by_title
         from langchain_core.documents import Document
@@ -35,7 +42,7 @@ class Ingest():
     
 
 
-    def ingest_path(self, folder_path: str, index_name: str, logging):
+    def ingest_path(self, folder_path: str, index_name: str):
         logging.info('Importing files to the vector store')
 
         from unstructured.partition.auto import partition        
@@ -66,17 +73,7 @@ class Ingest():
                 documents = self.get_langchain_docs(elements, file)
                 documents_all.extend(documents)
 
-        
-        embeddings = embeddingsService.get_embedings()
+        self.vectorStoreService.index_docs(documents, index_name)
 
-        if VECTORE_STORE == 'weaviate':
-            ingestService.index_docs_weavite(documents, embeddings, index_name)
-        else:
-            raise NotImplemented
 
         return "Ingestion succesfull"
-
-
-ingestService = Ingest()
-
-#
