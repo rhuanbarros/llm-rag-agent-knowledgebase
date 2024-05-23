@@ -1,5 +1,8 @@
 # Procurador.API.server
 
+# TODO
+    -   learn how to use https://github.com/python-injector/injector
+
 # Unstructured
     sudo apt update
     sudo apt install libmagic-dev

@@ -1,9 +1,10 @@
 from fastapi import HTTPException, status
 from app.embeddings import embeddingsService
+from app.vectorstore_weavite import weaviateService
 
 VECTORE_STORE = 'weaviate'
 
-WEAVIATE_URL = 'host.docker.internal'
+
 
 class Ingest():
     def get_langchain_docs(self, elements, filename):
@@ -32,24 +33,7 @@ class Ingest():
 
         return documents
     
-    def get_weaviate_basic_client(self):
-        import weaviate
-        weaviate_client = weaviate.connect_to_custom(
-            http_host=WEAVIATE_URL,
-            http_port=8080,
-            http_secure=False,
-            grpc_host=WEAVIATE_URL,
-            grpc_port=50051,
-            grpc_secure=False,
-            # auth_credentials=AuthApiKey(weaviate_key),   # `weaviate_key`: your Weaviate API key
-        )
 
-        return weaviate_client
-    
-    def index_docs_weavite(self, documents, embeddings, index_name: str):
-        weaviate_client = self.get_weaviate_basic_client()
-        from langchain_weaviate.vectorstores import WeaviateVectorStore
-        vector_store = WeaviateVectorStore.from_documents(documents, embeddings, client=weaviate_client, index_name=index_name)
 
     def ingest_path(self, folder_path: str, index_name: str, logging):
         logging.info('Importing files to the vector store')
@@ -86,13 +70,13 @@ class Ingest():
         embeddings = embeddingsService.get_embedings()
 
         if VECTORE_STORE == 'weaviate':
-            self.index_docs_weavite(documents, embeddings, index_name)
+            ingestService.index_docs_weavite(documents, embeddings, index_name)
         else:
             raise NotImplemented
 
         return "Ingestion succesfull"
 
 
-ingest = Ingest()
+ingestService = Ingest()
 
 #

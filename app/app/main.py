@@ -16,7 +16,7 @@ import logging
 import sys
 
 
-from app.ingest import ingest
+from app.ingest import ingestService
 
 
 
@@ -52,7 +52,7 @@ app.add_middleware(
 
 @app.post("/ingest_data_folder/", tags=["Data management"])
 async def ingest_data_folder(folder_path: str, index_name: str):
-    return ingest.ingest_path(folder_path, index_name, logging)
+    return ingestService.ingest_path(folder_path, index_name, logging)
 
 
 if __name__ == "__main__":
