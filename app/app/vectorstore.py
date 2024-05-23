@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 
 from app.models import QueryParamsModel
@@ -32,6 +33,7 @@ WEAVIATE_URL = 'host.docker.internal'
 class WeaviteVectorProvider(VectorStoreService):
     @inject
     def __init__(self, embeddingsService: EmbeddingsService):
+        logging.info('WeaviteVectorProvider instantiated')
         self.embeddingsService = embeddingsService
         self.embeddingsProvider = self.embeddingsService.get_provider()
 
