@@ -16,7 +16,7 @@ import logging
 import sys
 
 
-from .ingest import ingest
+from app.ingest import ingest
 
 
 

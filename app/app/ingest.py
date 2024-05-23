@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from app.embeddings import embeddingsService
 
 VECTORE_STORE = 'weaviate'
 
@@ -30,19 +31,6 @@ class Ingest():
             documents.append(Document(page_content=chunk.text, metadata=metadata))
 
         return documents
-    
-    # TODO: create another class to abstract this
-    def get_embedings(self):
-        from langchain_community.embeddings import GPT4AllEmbeddings
-        
-        model_name = "nomic-embed-text-v1.f16.gguf"
-
-        gpt4all_kwargs = {'allow_download': 'True'}
-
-        return GPT4AllEmbeddings(
-            model_name=model_name,
-            gpt4all_kwargs=gpt4all_kwargs
-        )
     
     def get_weaviate_basic_client(self):
         import weaviate
@@ -95,7 +83,7 @@ class Ingest():
                 documents_all.extend(documents)
 
         
-        embeddings = self.get_embedings()
+        embeddings = embeddingsService.get_embedings()
 
         if VECTORE_STORE == 'weaviate':
             self.index_docs_weavite(documents, embeddings, index_name)
