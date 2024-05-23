@@ -1,5 +1,7 @@
 from fastapi import HTTPException, status
 
+VECTORE_STORE = 'weaviate'
+
 WEAVIATE_URL = 'host.docker.internal'
 
 class Ingest():
@@ -55,6 +57,11 @@ class Ingest():
         )
 
         return weaviate_client
+    
+    def index_docs_weavite(self, documents, embeddings, index_name: str):
+        weaviate_client = self.get_weaviate_basic_client()
+        from langchain_weaviate.vectorstores import WeaviateVectorStore
+        vector_store = WeaviateVectorStore.from_documents(documents, embeddings, client=weaviate_client, index_name=index_name)
 
     def ingest_path(self, folder_path: str, index_name: str, logging):
         logging.info('Importing files to the vector store')
@@ -90,10 +97,10 @@ class Ingest():
         
         embeddings = self.get_embedings()
 
-        # if we need to change the vectore store, we can just chenge this 3 lines
-        weaviate_client = self.get_weaviate_basic_client()
-        from langchain_weaviate.vectorstores import WeaviateVectorStore
-        vector_store = WeaviateVectorStore.from_documents(documents, embeddings, client=weaviate_client, index_name=index_name)
+        if VECTORE_STORE == 'weaviate':
+            self.index_docs_weavite(documents, embeddings, index_name)
+        else:
+            raise NotImplemented
 
         return "Ingestion succesfull"
 
