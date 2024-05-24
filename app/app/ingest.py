@@ -73,7 +73,7 @@ class IngestService():
                 documents = self.get_langchain_docs(elements, file)
                 documents_all.extend(documents)
 
-        self.vectorStoreService.index_docs(documents, index_name)
+        self.vectorStoreService.index_docs(documents_all, index_name)
 
 
         return "Ingestion succesfull"
