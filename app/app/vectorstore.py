@@ -65,6 +65,10 @@ class WeaviteVectorProvider(VectorStoreService):
         vector_store = self.get_vectorstore(query_params.Index_name)
         retriever = vector_store.as_retriever(search_type="mmr")
         return retriever.invoke(query_params.Query)
+    
+    def get_retriever(self, index_name):
+        vector_store = self.get_vectorstore(index_name)
+        return vector_store.as_retriever(search_type="mmr")
         
 
     def search_semantic(self, query_params: QueryParamsModel):

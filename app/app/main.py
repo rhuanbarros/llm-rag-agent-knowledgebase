@@ -84,8 +84,8 @@ async def search(
 async def chat(ChatHistory: List[MessageModel]):
     pass
 
-@app.post("/simple_message/", response_model=MessageModel, tags=["Frontend"])
-async def chat(
+@app.post("/simple_message/", tags=["Frontend"])
+async def simple_message(
         message: str,
         agent: Agent = Injected(Agent)
     ):
