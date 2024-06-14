@@ -1,8 +1,8 @@
 import logging
 from abc import ABC, abstractmethod
 
-from app.models import QueryParamsModel
-from app.services.embeddings import EmbeddingsService
+from procurador.models import QueryParamsModel
+from procurador.services.embeddings import EmbeddingsService
 
 from injector import inject
 

@@ -1,6 +1,6 @@
 import logging
-from app.models import DocModel, QueryParamsModel
-from app.services.vectorstore import VectorStoreService
+from procurador.models import DocModel, QueryParamsModel
+from procurador.services.vectorstore import VectorStoreService
 
 from injector import inject
 

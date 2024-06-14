@@ -1,8 +1,8 @@
 import logging
 from fastapi import HTTPException, status
 
-from app.services.embeddings import EmbeddingsService
-from app.services.vectorstore import VectorStoreService
+from procurador.services.embeddings import EmbeddingsService
+from procurador.services.vectorstore import VectorStoreService
 
 
 from injector import inject

@@ -20,14 +20,14 @@ import logging
 import sys
 
 
-from app.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
-from app.agents.agent_basic import AgentBasic
-from app.services.llm import LlmService, OllamaLlmProvider
-from app.services.search import SearchService
-from app.models import *
-from app.services.ingest import IngestService
-from app.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
-from app.services.vectorstore import VectorStoreService, WeaviteVectorProvider
+from procurador.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
+from procurador.agents.agent_basic import AgentBasic
+from procurador.services.llm import LlmService, OllamaLlmProvider
+from procurador.services.search import SearchService
+from procurador.models import *
+from procurador.services.ingest import IngestService
+from procurador.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
+from procurador.services.vectorstore import VectorStoreService, WeaviteVectorProvider
 
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"

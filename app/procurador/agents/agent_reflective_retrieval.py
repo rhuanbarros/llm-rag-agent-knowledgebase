@@ -7,9 +7,9 @@ from langchain_core.documents.base import Document
 
 from typing import List
 
-from app.models import MessageModel
-from app.services.vectorstore import VectorStoreService
-from app.services.llm import LlmService
+from procurador.models import MessageModel
+from procurador.services.vectorstore import VectorStoreService
+from procurador.services.llm import LlmService
 
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
