@@ -125,6 +125,7 @@ configs = {
         'secondary': 'mistral',
         'tertiary': 'mistral'
     },
+    'index_name': 'index_1',
     # 'embeddings': '',
     # 'vector_store': '',
 }

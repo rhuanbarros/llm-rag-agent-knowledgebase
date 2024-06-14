@@ -32,15 +32,12 @@ class AgentRag():
         self.llmService = llmService
         self.vectorStoreService = vectorStoreService
 
-        self.llm_main = self.configService.options['llms']['main']
+        self.llm_main_name = self.configService.options['llms']['main']
+        self.index_name = self.configService.options['index_name']
+
+        self.llm = self.llmService.get_provider(self.llm_main_name)
+        self.retriever = self.vectorStoreService.get_retriever(self.index_name)
 
     def main_chain(self, query ):
         logging.info("main_chain")
         
-        logging.info("query")
-        logging.info(query)
-        
-        print("main_chain")
-        
-        print("query")
-        print(query)
