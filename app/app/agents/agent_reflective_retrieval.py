@@ -8,8 +8,8 @@ from langchain_core.documents.base import Document
 from typing import List
 
 from app.models import MessageModel
-from app.vectorstore import VectorStoreService
-from app.llm import LlmService
+from app.services.vectorstore import VectorStoreService
+from app.services.llm import LlmService
 
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
@@ -32,88 +32,7 @@ class AgentReflectiveRetrieval():
 
     def main_chain(self, chatHistory: List[MessageModel], model ):
         
-        def retrieve_documents(state):
-            print("---RETRIEVE---")
-            index_name = 'index_1'
-            
-            question = state["question"]
-            retriever = self.vectorStoreService.get_retriever(index_name)
-
-            # Retrieval
-            documents = retriever.invoke(question)
-            return {"documents": documents, "question": question}
-        
-        def generate(state):
-            print("---GENERATE---")
-            question = state["question"]
-            documents = state["documents"]
-
-            # RAG generation
-            rag_chain = self.rag_chain(model)
-            generation = rag_chain.invoke({"context": documents, "question": question})
-            return {"documents": documents, "question": question, "generation": generation}
-        
-        def grade_documents(state):
-            print("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
-            question = state["question"]
-            documents = state["documents"]
-
-            retrieval_grader = self.retrieval_grader_chain()
-
-            # Score each doc
-            filtered_docs = []
-            web_search = "No"
-            for d in documents:                
-                score = retrieval_grader.invoke(
-                    {"question": question, "document": d.page_content}
-                )
-                grade = score["score"]
-                # Document relevant
-                if grade.lower() == "yes":
-                    print("---GRADE: DOCUMENT RELEVANT---")
-                    filtered_docs.append(d)
-                # Document not relevant
-                else:
-                    print("---GRADE: DOCUMENT NOT RELEVANT---")
-                    # We do not include the document in filtered_docs
-                    # We set a flag to indicate that we want to run web search
-                    web_search = "Yes"
-                    continue
-            return {"documents": filtered_docs, "question": question, "web_search": web_search}
-
-        def grade_generation_v_documents_and_question(state):
-            print("---CHECK HALLUCINATIONS---")
-            question = state["question"]
-            documents = state["documents"]
-            generation = state["generation"]
-
-            hallucination_grader = self.hallucionation_checker_chain(model)
-            answer_grader = self.answer_useful_chain(model)
-
-            score = hallucination_grader.invoke(
-                {"documents": documents, "generation": generation}
-            )
-            grade = score["score"]
-
-            # Check hallucination
-            if grade == "yes":
-                print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
-                return "useful"
-                # Check question-answering
-                # print("---GRADE GENERATION vs QUESTION---")
-                # score = answer_grader.invoke({"question": question, "generation": generation})
-                # grade = score["score"]
-                # if grade == "yes":
-                #     print("---DECISION: GENERATION ADDRESSES QUESTION---")
-                #     return "useful"
-                # else:
-                #     print("---DECISION: GENERATION DOES NOT ADDRESS QUESTION---")
-                #     return "not useful"
-
-
-            else:
-                print("---DECISION: GENERATION IS NOT GROUNDED IN DOCUMENTS, RE-TRY---")
-                return "not supported"
+        self.model = model        
 
         class GraphState(TypedDict):
             """
@@ -133,9 +52,9 @@ class AgentReflectiveRetrieval():
        
 
         workflow = StateGraph(GraphState)
-        workflow.add_node("retrieve", retrieve_documents)  # retrieve
+        workflow.add_node("retrieve", self.retrieve_documents)  # retrieve
         # workflow.add_node("grade_documents", grade_documents)  # grade documents
-        workflow.add_node("generate", generate)  # generatae
+        workflow.add_node("generate", self.generate)  # generatae
 
         # Build graph
         workflow.set_entry_point('retrieve')
@@ -153,7 +72,7 @@ class AgentReflectiveRetrieval():
         # workflow.add_edge("websearch", "generate")
         workflow.add_conditional_edges(
             "generate",
-            grade_generation_v_documents_and_question,
+            self.grade_generation_v_documents_and_question,
             {
                 "not supported": "generate",
                 "useful": END,
@@ -214,7 +133,7 @@ class AgentReflectiveRetrieval():
         Grade one document if it is relavant to a user query
         '''
         
-        llm = self.llmService.get_provider(model)
+        llm = self.llmService.get_provider(model, format='json')
         
         prompt = PromptTemplate(
             template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> You are a grader assessing relevance 
@@ -252,7 +171,7 @@ class AgentReflectiveRetrieval():
             input_variables=["generation", "documents"],
         )
 
-        llm = self.llmService.get_provider(model)
+        llm = self.llmService.get_provider(model, format='json')
 
         hallucination_grader = prompt | llm | JsonOutputParser()
 
@@ -276,9 +195,98 @@ class AgentReflectiveRetrieval():
             input_variables=["generation", "question"],
         )
         
-        llm = self.llmService.get_provider(model)
+        llm = self.llmService.get_provider(model, format='json')
 
         answer_grader = prompt | llm | JsonOutputParser()
 
         return answer_grader
+    
+    def retrieve_documents(self, state):
+        print("---RETRIEVE---")
+        index_name = 'index_1'
+        
+        question = state["question"]
+        retriever = self.vectorStoreService.get_retriever(index_name)
+
+        # Retrieval
+        documents = retriever.invoke(question)
+        return {"documents": documents, "question": question}
+    
+    def generate(self, state):
+        print("---GENERATE---")
+        question = state["question"]
+        documents = state["documents"]
+
+        # RAG generation
+        rag_chain = self.rag_chain(self.model)
+        generation = rag_chain.invoke({"context": documents, "question": question})
+        return {"documents": documents, "question": question, "generation": generation}
+    
+    def grade_documents(self, state):
+        print("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
+        question = state["question"]
+        documents = state["documents"]
+
+        retrieval_grader = self.retrieval_grader_chain()
+
+        # Score each doc
+        filtered_docs = []
+        web_search = "No"
+        for d in documents:                
+            score = retrieval_grader.invoke(
+                {"question": question, "document": d.page_content}
+            )
+            grade = score["score"]
+            # Document relevant
+            if grade.lower() == "yes":
+                print("---GRADE: DOCUMENT RELEVANT---")
+                filtered_docs.append(d)
+            # Document not relevant
+            else:
+                print("---GRADE: DOCUMENT NOT RELEVANT---")
+                # We do not include the document in filtered_docs
+                # We set a flag to indicate that we want to run web search
+                web_search = "Yes"
+                continue
+        return {"documents": filtered_docs, "question": question, "web_search": web_search}
+
+    def grade_generation_v_documents_and_question(self, state):
+        print("---CHECK HALLUCINATIONS---")
+        question = state["question"]
+        documents = state["documents"]
+        generation = state["generation"]
+
+        hallucination_grader = self.hallucionation_checker_chain(self.model)
+        # answer_grader = self.answer_useful_chain(self.model)
+
+        score = hallucination_grader.invoke(
+            {"documents": documents, "generation": generation}
+        )
+        try:
+            grade = score["score"]
+        except:
+            print("EXCEPTIION!!!")
+            print("score")
+            print(score)
+            return
+
+        # Check hallucination
+        if grade == "yes":
+            print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
+            return "useful"
+            # Check question-answering
+            # print("---GRADE GENERATION vs QUESTION---")
+            # score = answer_grader.invoke({"question": question, "generation": generation})
+            # grade = score["score"]
+            # if grade == "yes":
+            #     print("---DECISION: GENERATION ADDRESSES QUESTION---")
+            #     return "useful"
+            # else:
+            #     print("---DECISION: GENERATION DOES NOT ADDRESS QUESTION---")
+            #     return "not useful"
+
+
+        else:
+            print("---DECISION: GENERATION IS NOT GROUNDED IN DOCUMENTS, RE-TRY---")
+            return "not supported"
     

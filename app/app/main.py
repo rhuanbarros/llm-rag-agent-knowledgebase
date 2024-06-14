@@ -20,14 +20,14 @@ import logging
 import sys
 
 
-from app.AgentReflectiveRetrieval import Agent, AgentReflectiveRetrieval
-from app.agentBasic import AgentBasic
-from app.llm import LlmService, OllamaLlmProvider
-from app.search import SearchService
+from app.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
+from app.agents.agent_basic import AgentBasic
+from app.services.llm import LlmService, OllamaLlmProvider
+from app.services.search import SearchService
 from app.models import *
-from app.ingest import IngestService
-from app.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
-from app.vectorstore import VectorStoreService, WeaviteVectorProvider
+from app.services.ingest import IngestService
+from app.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
+from app.services.vectorstore import VectorStoreService, WeaviteVectorProvider
 
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -92,7 +92,7 @@ async def chat(
 @app.post("/simple_message/", tags=["Frontend"])
 async def simple_message(
         message: str,
-        agent: AgentBasic = Injected(Agent)
+        agent: AgentBasic = Injected(AgentBasic)
     ):
     model = 'mistral'
     
@@ -102,7 +102,7 @@ async def simple_message(
 @app.post("/reflective_retrieval/", tags=["Frontend"])
 async def reflective_retrieval(
         message: str,
-        agent: AgentReflectiveRetrieval = Injected(Agent)
+        agent: AgentReflectiveRetrieval = Injected(AgentReflectiveRetrieval)
     ):
     model = 'llama3'
     
