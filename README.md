@@ -1,5 +1,11 @@
 # Procurador.API.server
 
+# how to run
+
+cd app
+source .venv/bin/activate
+fastapi dev app/main.py
+
 # Dependecy injector
     https://github.com/python-injector/injector
     
@@ -13,6 +19,9 @@
     sudo apt install libreoffice
 
 # Weaviate docs
+    
+    docker compose up
+
     This works
     https://pypi.org/project/langchain-weaviate/
     https://python.langchain.com/v0.1/docs/integrations/vectorstores/weaviate/
