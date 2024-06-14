@@ -20,7 +20,8 @@ import logging
 import sys
 
 
-from app.agent import Agent
+from app.AgentReflectiveRetrieval import Agent, AgentReflectiveRetrieval
+from app.agentBasic import AgentBasic
 from app.llm import LlmService, OllamaLlmProvider
 from app.search import SearchService
 from app.models import *
@@ -81,16 +82,31 @@ async def search(
 
 
 @app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
-async def chat(ChatHistory: List[MessageModel]):
+async def chat(
+        chatHistory: List[MessageModel],
+        # agent: Agent = Injected(Agent)
+    ):
     pass
+
 
 @app.post("/simple_message/", tags=["Frontend"])
 async def simple_message(
         message: str,
-        agent: Agent = Injected(Agent)
+        agent: AgentBasic = Injected(Agent)
     ):
     model = 'mistral'
+    
     return agent.simple_message_chain(model, message)
+    # return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
+
+@app.post("/reflective_retrieval/", tags=["Frontend"])
+async def reflective_retrieval(
+        message: str,
+        agent: AgentReflectiveRetrieval = Injected(Agent)
+    ):
+    model = 'llama3'
+    
+    return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
 
 # inj = Injector()

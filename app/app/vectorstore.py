@@ -27,6 +27,10 @@ class VectorStoreService(ABC):
     def search_hybrid(self, query_params: QueryParamsModel):
         pass
 
+    @abstractmethod
+    def get_retriever(self, index_name):
+        pass
+
 # TODO: pass this when binding
 WEAVIATE_URL = 'host.docker.internal'
 
