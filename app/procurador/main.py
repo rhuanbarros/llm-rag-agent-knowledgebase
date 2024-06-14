@@ -20,6 +20,8 @@ import logging
 import sys
 
 
+from procurador.agents.agent_rag import AgentRag
+from procurador.config import ConfigService
 from procurador.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
 from procurador.agents.agent_basic import AgentBasic
 from procurador.services.llm import LlmService, OllamaLlmProvider
@@ -99,14 +101,33 @@ async def simple_message(
     return agent.simple_message_chain(model, message)
     # return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
-@app.post("/reflective_retrieval/", tags=["Frontend"])
-async def reflective_retrieval(
-        message: str,
-        agent: AgentReflectiveRetrieval = Injected(AgentReflectiveRetrieval)
+@app.post("/agent_rag/", tags=["Frontend"])
+async def agent_rag(
+        message = 'como acessar o pje?',
+        agent: AgentRag = Injected(AgentRag)
     ):
-    model = 'llama3'
+
+    return agent.main_chain('como acessar o pje?')
+
+# @app.post("/reflective_retrieval/", tags=["Frontend"])
+# async def reflective_retrieval(
+#         message: str,
+#         agent: AgentReflectiveRetrieval = Injected(AgentReflectiveRetrieval)
+#     ):
+#     model = 'llama3'
     
-    return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
+#     return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
+
+
+configs = {
+    'llms': {
+        'main': 'llama3',
+        'secondary': 'mistral',
+        'tertiary': 'mistral'
+    },
+    # 'embeddings': '',
+    # 'vector_store': '',
+}
 
 
 # inj = Injector()
@@ -114,6 +135,7 @@ inj = Injector(auto_bind=True)
 inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
 inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
 inj.binder.bind(LlmService, to=OllamaLlmProvider)
+inj.binder.bind(ConfigService, to=ConfigService(configs))
 
 attach_injector(app, inj)
 
