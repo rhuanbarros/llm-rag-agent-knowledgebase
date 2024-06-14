@@ -7,6 +7,7 @@ class EmbeddingsService(ABC):
         pass
 
 class GPT4AllEmbeddingsProvider(EmbeddingsService):
+    
     def get_provider(self):
         logging.info('GPT4AllEmbeddingsProvider - get_provider')
         

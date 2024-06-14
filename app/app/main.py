@@ -21,6 +21,7 @@ import sys
 
 
 from app.agent import Agent
+from app.llm import LlmService, OllamaLlmProvider
 from app.search import SearchService
 from app.models import *
 from app.ingest import IngestService
@@ -66,7 +67,6 @@ async def ingest_data_folder(folder_path: str, index_name: str, ingestService: I
 async def search(
         query_params: QueryParamsModel, 
         searchService: SearchService = Injected(SearchService), 
-        agent: Agent = Injected(Agent) 
     ):
 
     if query_params.Type == 'semantic':
@@ -84,11 +84,20 @@ async def search(
 async def chat(ChatHistory: List[MessageModel]):
     pass
 
+@app.post("/simple_message/", response_model=MessageModel, tags=["Frontend"])
+async def chat(
+        message: str,
+        agent: Agent = Injected(Agent)
+    ):
+    model = 'mistral'
+    return agent.simple_message_chain(model, message)
+
 
 # inj = Injector()
 inj = Injector(auto_bind=True)
 inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
 inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
+inj.binder.bind(LlmService, to=OllamaLlmProvider)
 
 attach_injector(app, inj)
 

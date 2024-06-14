@@ -32,3 +32,6 @@ fastapi dev app/main.py
 
     the following docs dont work ->   https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.weaviate.Weaviate.html 
 
+# Ollama
+
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama

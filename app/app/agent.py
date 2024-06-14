@@ -1,13 +1,24 @@
 import logging
+from injector import inject
 from langchain_community.chat_models import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.documents.base import Document
 
+from app.llm import LlmService
+
 class Agent():
-    def __init__(self, model_name='llama3', url_ollama = 'http://host.docker.internal:11434'):
-        self.model_name = model_name
-        self.url_ollama = url_ollama
+    # def __init__(self, model_name='llama3', url_ollama = 'http://host.docker.internal:11434'):
+    
+    @inject
+    def __init__(self, llmService: LlmService):
+        self.llmService = llmService
+
+    def simple_message_chain(self, model, message):
+
+        llm = self.llmService.get_provider(model)
+        return llm(message)
+
 
     def summary_chain(self, docs: list[Document]):
         prompt = PromptTemplate(
