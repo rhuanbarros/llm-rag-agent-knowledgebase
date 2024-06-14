@@ -1,5 +1,14 @@
 # Procurador.API.server
 
+# TODO
+
+    - I was creating the AgentRag using the notebook
+    - I should get the old code from the other project to create the chat with history
+    - better to remember the basic chains functionality usgin langchain in the notebbok 
+    - also I should create this notebook as a cheatsheet to remember later
+
+
+
 # how to run
 
 cd app
