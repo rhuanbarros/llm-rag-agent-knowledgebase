@@ -11,6 +11,17 @@
             sudo apt install tesseract-ocr -y
             sudo apt install tesseract-ocr-por -y  #portuguese language support
             sudo apt install libreoffice -y
+    - open a terminal ouside the devcontainer
+    - cd weaviate
+    - docker compose up
+    - run the endpoint to ingest some pdf files
+    - go to url http://127.0.0.1:8000/docs#/Data%20management/ingest_data_folder_ingest_data_folder__post
+    - run it
+    - take a look at the log in the terminal
+    - run the server
+    - run the frontend
+    - try search and ask llm
+
 
 # how to run
     in the app directory
