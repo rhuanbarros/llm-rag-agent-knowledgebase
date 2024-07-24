@@ -5,9 +5,7 @@ class QueryParamsModel(BaseModel):
     Index_name: str
     Query: str
     Type: str
-    # Generate_llm: bool
-
-
+    
 class DocModel(BaseModel):
     # Metadata: Optional[Dict[str, str]] = None
     Content: str
@@ -18,7 +16,3 @@ class DocModel(BaseModel):
 class MessageModel(BaseModel):
     Type: str
     Content: str
-
-class SearchResultModel(BaseModel):
-    Results: list[DocModel]
-    Generated_answer: str

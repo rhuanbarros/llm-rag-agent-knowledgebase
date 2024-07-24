@@ -78,6 +78,14 @@ async def search(
     else:
         raise HTTPException(status_code=400, detail="QueryParamsModel.Type should be a valid type.")        
 
+@app.post("/simple_message/", tags=["Frontend"])
+async def simple_message(
+        message: str,
+        model_name: str = None,
+        agent: AgentBasic = Injected(AgentBasic)
+    ):    
+    return agent.simple_message_chain(message, model_name)
+    
 
 
 # @app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
@@ -88,14 +96,6 @@ async def search(
 #     pass
 
 
-@app.post("/simple_message/", tags=["Frontend"])
-async def simple_message(
-        message: str,
-        model_name: str = None,
-        agent: AgentBasic = Injected(AgentBasic)
-    ):    
-    return agent.simple_message_chain(message, model_name)
-    # return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
 # @app.post("/agent_rag/", tags=["Frontend"])
 # async def agent_rag(
@@ -114,20 +114,6 @@ async def simple_message(
     
 #     return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
-
-# configs = {
-#     'llms': {
-#         'main': 'llama3',
-#         'secondary': 'mistral',
-#         'tertiary': 'mistral'
-#     },
-#     # 'index_name': 'index_1',
-#     # 'embeddings': '',
-#     # 'vector_store': '',
-# }
-
-
-# inj = Injector()
 inj = Injector(auto_bind=True)
 inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
 inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)

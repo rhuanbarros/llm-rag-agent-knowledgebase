@@ -9,8 +9,6 @@ from injector import inject
 
 class IngestService():
     @inject
-    # def __init__(self, embeddingsService: EmbeddingsService, vectorStoreService: VectorStoreService):
-        # self.embeddingsService = embeddingsService
     def __init__(self, vectorStoreService: VectorStoreService):
         self.vectorStoreService = vectorStoreService
 
