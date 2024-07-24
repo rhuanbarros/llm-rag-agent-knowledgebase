@@ -77,14 +77,14 @@ class WeaviteVectorProvider(VectorStoreService):
 
     def search_semantic(self, query_params: QueryParamsModel):
         vector_store = self.get_vectorstore(query_params.Index_name)
-        return vector_store.similarity_search(query_params.Query, alpha=1)
+        return vector_store.similarity_search(query_params.Query, alpha=1, k=15)
 
     def search_keyword(self, query_params: QueryParamsModel):
         vector_store = self.get_vectorstore(query_params.Index_name)
-        return vector_store.similarity_search(query_params.Query, alpha=0)
+        return vector_store.similarity_search(query_params.Query, alpha=0, k=15)
     
     def search_hybrid(self, query_params: QueryParamsModel):
         vector_store = self.get_vectorstore(query_params.Index_name)
-        return vector_store.similarity_search(query_params.Query, alpha=0.5)
+        return vector_store.similarity_search(query_params.Query, alpha=0.5, k=15)
         
 
