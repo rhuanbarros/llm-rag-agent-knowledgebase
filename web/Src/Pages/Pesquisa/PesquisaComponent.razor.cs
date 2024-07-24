@@ -26,7 +26,7 @@ public partial class PesquisaComponent : ComponentBase
 
             QueryParamsModel queryParams = new()
             {
-                Index_name = "index2",
+                Index_name = "index_files",
                 Query = inputPesquisa,
                 Type = SelectedOptionSearch
                 // Alpha = 0.5,
