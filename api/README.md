@@ -13,7 +13,7 @@
 
 cd app
 source .venv/bin/activate
-fastapi dev app/main.py
+fastapi dev procurador/main.py
 
 # Dependecy injector
     https://github.com/python-injector/injector
@@ -21,11 +21,11 @@ fastapi dev app/main.py
 
 # Unstructured
     sudo apt update
-    sudo apt install libmagic-dev
-    sudo apt install poppler-utils
-    sudo apt install tesseract-ocr
-    sudo apt install tesseract-ocr-por
-    sudo apt install libreoffice
+    sudo apt install libmagic-dev -y
+    sudo apt install poppler-utils -y
+    sudo apt install tesseract-ocr -y
+    sudo apt install tesseract-ocr-por -y  #portuguese language support
+    sudo apt install libreoffice -y
 
 # Weaviate docs
     

@@ -32,10 +32,6 @@ from procurador.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsP
 from procurador.services.vectorstore import VectorStoreService, WeaviteVectorProvider
 
 
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGCHAIN_PROJECT"] = f"Procurador API"
-
 logging.basicConfig(level=logging.INFO,  # Define o nível de log
                     format='%(asctime)s - %(levelname)s - %(message)s',  # Define o formato da mensagem de log
                     stream=sys.stdout)  # Define a saída do log para stdout
@@ -44,13 +40,10 @@ logging.basicConfig(level=logging.INFO,  # Define o nível de log
 
 
 
+logging.info('Initializing FastAPI')
+app = FastAPI(title="LLM RAG Knowledgebase API Server", description="API endpoints")
 
-
-
-logging.info('Inicializando FastAPI')
-app = FastAPI(title="Procurador API Server", description="API description")
-
-logging.info('Configurando CORS')
+logging.info('CORS settings')
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
