@@ -27,13 +27,14 @@ from langgraph.graph import END, StateGraph
 
 class AgentRag():
     @inject
-    def __init__(self, configService: ConfigService, llmService: LlmService, vectorStoreService: VectorStoreService):
-        self.configService = configService
+    # def __init__(self, configService: ConfigService, llmService: LlmService, vectorStoreService: VectorStoreService):
+    def __init__(self, llmService: LlmService, vectorStoreService: VectorStoreService):
+        # self.configService = configService
         self.llmService = llmService
         self.vectorStoreService = vectorStoreService
 
-        self.llm_main_name = self.configService.options['llms']['main']
-        self.index_name = self.configService.options['index_name']
+        # self.llm_main_name = self.configService.options['llms']['main']
+        # self.index_name = self.configService.options['index_name']
 
         self.llm = self.llmService.get_provider(self.llm_main_name)
         self.retriever = self.vectorStoreService.get_retriever(self.index_name)

@@ -24,12 +24,16 @@ from procurador.agents.agent_rag import AgentRag
 from procurador.config import ConfigService
 from procurador.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
 from procurador.agents.agent_basic import AgentBasic
-from procurador.services.llm import LlmService, OllamaLlmProvider
+from procurador.services.llm import LlmService, OllamaLlmProvider, OpenAILlmProvider
 from procurador.services.search import SearchService
 from procurador.models import *
 from procurador.services.ingest import IngestService
 from procurador.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
 from procurador.services.vectorstore import VectorStoreService, WeaviteVectorProvider
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 logging.basicConfig(level=logging.INFO,  # Define o nível de log
@@ -76,31 +80,30 @@ async def search(
 
 
 
-@app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
-async def chat(
-        chatHistory: List[MessageModel],
-        # agent: Agent = Injected(Agent)
-    ):
-    pass
+# @app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
+# async def chat(
+#         chatHistory: List[MessageModel],
+#         # agent: Agent = Injected(Agent)
+#     ):
+#     pass
 
 
 @app.post("/simple_message/", tags=["Frontend"])
 async def simple_message(
         message: str,
+        model_name: str = None,
         agent: AgentBasic = Injected(AgentBasic)
-    ):
-    model = 'mistral'
-    
-    return agent.simple_message_chain(model, message)
+    ):    
+    return agent.simple_message_chain(message, model_name)
     # return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
-@app.post("/agent_rag/", tags=["Frontend"])
-async def agent_rag(
-        message = 'como acessar o pje?',
-        agent: AgentRag = Injected(AgentRag)
-    ):
+# @app.post("/agent_rag/", tags=["Frontend"])
+# async def agent_rag(
+#         message = 'como acessar o pje?',
+#         agent: AgentRag = Injected(AgentRag)
+#     ):
 
-    return agent.main_chain('como acessar o pje?')
+#     return agent.main_chain('como acessar o pje?')
 
 # @app.post("/reflective_retrieval/", tags=["Frontend"])
 # async def reflective_retrieval(
@@ -112,24 +115,25 @@ async def agent_rag(
 #     return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
 
 
-configs = {
-    'llms': {
-        'main': 'llama3',
-        'secondary': 'mistral',
-        'tertiary': 'mistral'
-    },
-    'index_name': 'index_1',
-    # 'embeddings': '',
-    # 'vector_store': '',
-}
+# configs = {
+#     'llms': {
+#         'main': 'llama3',
+#         'secondary': 'mistral',
+#         'tertiary': 'mistral'
+#     },
+#     # 'index_name': 'index_1',
+#     # 'embeddings': '',
+#     # 'vector_store': '',
+# }
 
 
 # inj = Injector()
 inj = Injector(auto_bind=True)
 inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
 inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
-inj.binder.bind(LlmService, to=OllamaLlmProvider)
-inj.binder.bind(ConfigService, to=ConfigService(configs))
+# inj.binder.bind(LlmService, to=OllamaLlmProvider)
+inj.binder.bind(LlmService, to=OpenAILlmProvider)
+# inj.binder.bind(ConfigService, to=ConfigService(configs))
 
 attach_injector(app, inj)
 

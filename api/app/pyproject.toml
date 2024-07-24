@@ -21,6 +21,8 @@ tavily-python = "^0.3.3"
 weaviate-client = "^4.6.2"
 fastapi-injector = "^0.5.4"
 langchain-text-splitters = "^0.2.0"
+langchain-openai = "^0.1.17"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

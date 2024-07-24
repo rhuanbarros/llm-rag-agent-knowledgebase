@@ -31,33 +31,50 @@ class AgentBasic():
         self.llmService = llmService
         self.vectorStoreService = vectorStoreService
 
-    def simple_message_chain(self, model, message):
+    def simple_message_chain(self, message, model=None):
+
+        prompt_system = """
+            You are a helpful assistant who is answer all the folling questions.
+        """
+        prompt_user = """
+            {MESSAGE}
+        """
+
+        from langchain_core.prompts import ChatPromptTemplate
+
+        prompt_conversation = ChatPromptTemplate.from_messages([
+            ("system", prompt_system), 
+            ("user", prompt_user)
+            ])
 
         llm = self.llmService.get_provider(model)
-        return llm.invoke(message)
 
-    def summary_chain(self, docs: list[Document]):
-        prompt = PromptTemplate(
-            template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> 
-            You are an assistant for helping summarizing documents. 
-            Use the following pieces of retrieved documents to generate a summary. 
+        chain = prompt_conversation | llm
+
+        return chain.invoke({'MESSAGE': message})
+
+    # def summary_chain(self, docs: list[Document]):
+    #     prompt = PromptTemplate(
+    #         template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|> 
+    #         You are an assistant for helping summarizing documents. 
+    #         Use the following pieces of retrieved documents to generate a summary. 
             
-            Use four sentences maximum and keep the answer concise. no preamble or explanation<|eot_id|><|start_header_id|>user<|end_header_id|>
+    #         Use four sentences maximum and keep the answer concise. no preamble or explanation<|eot_id|><|start_header_id|>user<|end_header_id|>
 
-            Context: {context} 
-            Answer: <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
-            input_variables=["question", "document"],
-        )
+    #         Context: {context} 
+    #         Answer: <|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
+    #         input_variables=["question", "document"],
+    #     )
 
-        llm = ChatOllama(model=self.model_name, temperature=0, base_url=self.url_ollama)
-
-
-        # Post-processing
-        def format_docs(docs):
-            return "\n\n".join(doc.page_content for doc in docs)
+    #     llm = ChatOllama(model=self.model_name, temperature=0, base_url=self.url_ollama)
 
 
-        # Chain
-        rag_chain = prompt | llm | StrOutputParser()
+    #     # Post-processing
+    #     def format_docs(docs):
+    #         return "\n\n".join(doc.page_content for doc in docs)
 
-        return rag_chain.invoke({"context": docs})
+
+    #     # Chain
+    #     rag_chain = prompt | llm | StrOutputParser()
+
+    #     return rag_chain.invoke({"context": docs})
