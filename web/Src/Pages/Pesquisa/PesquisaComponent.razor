@@ -1,0 +1,89 @@
+@using MudBlazor
+@using Procurador.Web.Src.Services.Base
+
+
+<div class='d-flex flex-column justify-start align-center gap-2' style='width: 100% !important' COLUNA>
+
+    <MudRadioGroup @bind-Value="@SelectedOptionSearch">
+        <MudRadio Value="@("semantic")" Color="Color.Primary">Semântica</MudRadio>
+        <MudRadio Value="@("keyword")" Color="Color.Secondary">Palavra-chave</MudRadio>
+        <MudRadio Value="@("hybrid")">Híbrida</MudRadio>
+    </MudRadioGroup>
+
+    <div class='d-flex flex-row justify-center align-center gap-1 pb-4' style='width: 100% !important' LINHA>
+        <MudTextField @bind-Value="inputPesquisa" Label="Digite a sua pesquisa" Variant="Variant.Outlined"
+            Margin="Margin.Dense" OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickPesquisa(); })' />
+
+        <MudIconButton Icon="@Icons.Material.Filled.Search" aria-label="delete" Color="Color.Primary"
+            Variant="Variant.Outlined" Size="Size.Medium" OnClick="OnClickPesquisa"></MudIconButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Chat" aria-label="delete" Color="Color.Primary"
+            Variant="Variant.Outlined" Size="Size.Medium"></MudIconButton>
+    </div>
+
+    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:63vh; overflow:scroll;">
+
+         @if (searchResults == null)
+        {
+            if (primeiraPesquisa)
+            {
+                <div class="d-flex flex-row my-4">
+                    <div class="mx-4">
+                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                    </div>
+                    <div>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">Faça uma pesquisa para aparecer os resultados aqui.</MudText>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>Carregando</p>
+                <MudSkeleton />
+            }
+        }
+        else if (searchResults.Count == 0)
+        {
+            <div class="d-flex flex-row my-4">
+                <div class="mx-4">
+                    <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                </div>
+                <div>
+                    <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">
+                        Essa pesquisa retornou 0 itens.
+                    </MudText>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-row my-4">
+                <div class="mx-4">
+                    <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
+                </div>
+                <div>
+                    <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">
+                        Os documentos abaixo falam sobre...
+                    </MudText>
+                </div>
+            </div>
+
+            @* <MudDivider /> *@
+
+            <MudList Clickable="true" DisableGutters="false">
+                @foreach (DocModel result in searchResults)
+                {
+                    
+                    <MudListItem Icon="@Icons.Material.Filled.Bookmark" >
+                        @* @GetDocsFormated(result) *@
+                        @GetTruncatedContent(result.Content)
+                        <br>
+                        Fonte: @result.Source; Página: @result.Page; Tipo de arquivo: @result.Filetype;
+                    </MudListItem>
+                }
+            </MudList>
+        }
+    </div>
+
+
+
+</div>
