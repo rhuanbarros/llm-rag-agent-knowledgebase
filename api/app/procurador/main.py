@@ -56,7 +56,7 @@ app.add_middleware(
 )
 
 @app.post("/ingest_data_folder/", tags=["Data management"])
-async def ingest_data_folder(folder_path: str, index_name: str, ingestService: IngestService = Injected(IngestService) ):
+async def ingest_data_folder(folder_path: str = "../docs", index_name: str = "index_files", ingestService: IngestService = Injected(IngestService) ):
     return ingestService.ingest_path(folder_path, index_name)
 
 @app.post("/search/", response_model=list[DocModel], tags=["Frontend"])

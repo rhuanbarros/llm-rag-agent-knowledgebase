@@ -5,7 +5,7 @@ class QueryParamsModel(BaseModel):
     Index_name: str
     Query: str
     Type: str
-    Generate_llm: bool
+    # Generate_llm: bool
 
 
 class DocModel(BaseModel):
