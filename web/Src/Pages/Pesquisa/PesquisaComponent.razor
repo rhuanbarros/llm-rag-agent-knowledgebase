@@ -5,13 +5,13 @@
 <div class='d-flex flex-column justify-start align-center gap-2' style='width: 100% !important' COLUNA>
 
     <MudRadioGroup @bind-Value="@SelectedOptionSearch">
-        <MudRadio Value="@("semantic")" Color="Color.Primary">Semântica</MudRadio>
-        <MudRadio Value="@("keyword")" Color="Color.Secondary">Palavra-chave</MudRadio>
-        <MudRadio Value="@("hybrid")">Híbrida</MudRadio>
+        <MudRadio Value="@("semantic")" Color="Color.Primary">Semantic</MudRadio>
+        <MudRadio Value="@("keyword")" Color="Color.Secondary">keyword</MudRadio>
+        <MudRadio Value="@("hybrid")">Hybrid</MudRadio>
     </MudRadioGroup>
 
     <div class='d-flex flex-row justify-center align-center gap-1 pb-4' style='width: 100% !important' LINHA>
-        <MudTextField @bind-Value="inputPesquisa" Label="Digite a sua pesquisa" Variant="Variant.Outlined"
+        <MudTextField @bind-Value="inputPesquisa" Label="Type your search" Variant="Variant.Outlined"
             Margin="Margin.Dense" OnKeyUp='@(async (e) => { if (e.Key == "Enter") await OnClickPesquisa(); })' />
 
         <MudIconButton Icon="@Icons.Material.Filled.Search" aria-label="delete" Color="Color.Primary"
@@ -31,7 +31,7 @@
                         <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
                     </div>
                     <div>
-                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">Faça uma pesquisa para aparecer os resultados aqui.</MudText>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">Search for anything above.</MudText>
                     </div>
                 </div>
             }
@@ -49,14 +49,14 @@
                 </div>
                 <div>
                     <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">
-                        Essa pesquisa retornou 0 itens.
+                        This search returned 0 results.
                     </MudText>
                 </div>
             </div>
         }
         else
         {
-            <div class="d-flex flex-row my-4">
+            @* <div class="d-flex flex-row my-4">
                 <div class="mx-4">
                     <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">AI</MudAvatar>
                 </div>
@@ -65,7 +65,7 @@
                         Os documentos abaixo falam sobre...
                     </MudText>
                 </div>
-            </div>
+            </div> *@
 
             @* <MudDivider /> *@
 
@@ -77,7 +77,7 @@
                         @* @GetDocsFormated(result) *@
                         @GetTruncatedContent(result.Content)
                         <br>
-                        Fonte: @result.Source; Página: @result.Page; Tipo de arquivo: @result.Filetype;
+                        Source: @result.Source; Page: @result.Page; File type: @result.Filetype;
                     </MudListItem>
                 }
             </MudList>
