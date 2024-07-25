@@ -2,8 +2,6 @@
 
 # How to setup the server
     - Run the project in the devcontainer
-    - cd app
-    - poetry install
     - install Unstructured dependecies
             sudo apt update
             sudo apt install libmagic-dev -y
@@ -11,6 +9,11 @@
             sudo apt install tesseract-ocr -y
             sudo apt install tesseract-ocr-por -y  #portuguese language support
             sudo apt install libreoffice -y
+    - install dev dependencies
+            sudo apt-get install graphviz graphviz-dev  
+    - cd app
+    - poetry install
+
     - open a terminal ouside the devcontainer
     - cd weaviate
     - docker compose up
@@ -51,9 +54,11 @@ docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ol
 
 
 # TODO
+    - indexing files using ParentDocumentRetriever to use the longer context of gpt4o
+        https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/parent_document_retriever/
+    - email indexing
+        - use to index the email with metadata and the cleaned version with report in multiple vectors
+            https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/multi_vector/ 
+    - index google drive documents
 
-    - I was creating the AgentRag using the notebook
-    - I should get the old code from the other project to create the chat with history
-    - better to remember the basic chains functionality usgin langchain in the notebbok 
-    - also I should create this notebook as a cheatsheet to remember later
 
