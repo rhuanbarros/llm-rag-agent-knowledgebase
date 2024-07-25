@@ -15,15 +15,15 @@ public partial class ChatComponent : ComponentBase
     {
         if(!string.IsNullOrEmpty(inputChat))
         {
-            MessageModel messageModel = new() 
+            MessageModel message = new() 
             {
                 Type = "Human",
                 Content = inputChat
             };
-            ChatHistory.Add(messageModel);
+            ChatHistory.Add(message);
             inputChat = "";
 
-            MessageModel aiMessage = await FrontendClient.Chat_chat__postAsync(ChatHistory);
+            MessageModel aiMessage = await FrontendClient.Chat_chat__postAsync(message);
             ChatHistory.Add(aiMessage);
             
             await InvokeAsync(StateHasChanged);
