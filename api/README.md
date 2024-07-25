@@ -54,6 +54,7 @@ docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ol
 
 
 # TODO
+    - create a uid in the frontend at the start of the conversation and pass it to the backend
     - indexing files using ParentDocumentRetriever to use the longer context of gpt4o
         https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/parent_document_retriever/
     - email indexing
