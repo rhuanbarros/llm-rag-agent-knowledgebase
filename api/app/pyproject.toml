@@ -24,6 +24,7 @@ langchain-text-splitters = "^0.2.0"
 langchain-openai = "^0.1.17"
 python-dotenv = "^1.0.1"
 langchainhub = "^0.1.20"
+aiosqlite = "^0.20.0"
 
 
 [tool.poetry.group.dev.dependencies]

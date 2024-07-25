@@ -21,8 +21,6 @@ import sys
 
 
 from procurador.agents.agent_rag import AgentRag
-from procurador.config import ConfigService
-from procurador.agents.agent_reflective_retrieval import AgentReflectiveRetrieval
 from procurador.agents.agent_basic import AgentBasic
 from procurador.services.llm import LlmService, OllamaLlmProvider, OpenAILlmProvider
 from procurador.services.search import SearchService
@@ -30,6 +28,13 @@ from procurador.models import *
 from procurador.services.ingest import IngestService
 from procurador.services.embeddings import EmbeddingsService, GPT4AllEmbeddingsProvider
 from procurador.services.vectorstore import VectorStoreService, WeaviteVectorProvider
+
+from langchain_core.messages import HumanMessage
+
+import asyncio
+import aiosqlite
+from langgraph.checkpoint.aiosqlite import AsyncSqliteSaver
+from langgraph.checkpoint.sqlite import SqliteSaver
 
 from dotenv import load_dotenv
 
@@ -59,8 +64,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logging.info('Initializing Dependecy Injector')
+inj = Injector(auto_bind=True)
+inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
+inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
+# inj.binder.bind(LlmService, to=OllamaLlmProvider)
+inj.binder.bind(LlmService, to=OpenAILlmProvider)
+
+attach_injector(app, inj)
+
+
+logging.info('Initializing Endpoints')
+
+default_files_index_name = "index_files"
+
 @app.post("/ingest_data_folder/", tags=["Data management"])
-async def ingest_data_folder(folder_path: str = "../docs", index_name: str = "index_files", ingestService: IngestService = Injected(IngestService) ):
+async def ingest_data_folder(folder_path: str = "../docs", index_name: str = default_files_index_name, ingestService: IngestService = Injected(IngestService) ):
     return ingestService.ingest_path(folder_path, index_name)
 
 @app.post("/search/", response_model=list[DocModel], tags=["Frontend"])
@@ -85,43 +104,41 @@ async def simple_message(
         agent: AgentBasic = Injected(AgentBasic)
     ):    
     return agent.simple_message_chain(message, model_name)
-    
 
-
-# @app.post("/chat/", response_model=MessageModel, tags=["Frontend"])
+@app.post("/chat/", tags=["Frontend"], response_model=MessageModel)
+async def chat(
+        message: MessageModel,
+    ):
 # async def chat(
-#         chatHistory: List[MessageModel],
-#         # agent: Agent = Injected(Agent)
+#         message: str = 'como faço para instalar o pje?',
 #     ):
-#     pass
+    thread = {"configurable": {"thread_id": "2"}}
 
+    messages = [HumanMessage(content=message.Content)]
+    # messages = [HumanMessage(content=message)]
 
+    llmService = inj.get(LlmService)
+    vectorStoreService = inj.get(VectorStoreService)
 
-# @app.post("/agent_rag/", tags=["Frontend"])
-# async def agent_rag(
-#         message = 'como acessar o pje?',
-#         agent: AgentRag = Injected(AgentRag)
-#     ):
+    # checkpointer = SqliteSaver.from_conn_string(":memory:")
+    # async with AsyncSqliteSaver.from_conn_string("checkpoints_memory.sqlite") as checkpointer:    
+    #     agent = AgentRag(llmService=llmService, vectorStoreService=vectorStoreService, checkpointer=checkpointer, index_name=default_files_index_name)
 
-#     return agent.main_chain('como acessar o pje?')
+    #     response = await agent.graph.ainvoke({"messages": messages}, thread)
 
-# @app.post("/reflective_retrieval/", tags=["Frontend"])
-# async def reflective_retrieval(
-#         message: str,
-#         agent: AgentReflectiveRetrieval = Injected(AgentReflectiveRetrieval)
-#     ):
-#     model = 'llama3'
+    #     answer = response['messages'][-1].content
+    #     return MessageModel(Type='AI', Content=answer)
     
-#     return agent.main_chain([MessageModel(Type='Human', Content=message)], model)
+    # async with SqliteSaver.from_conn_string(":memory:") as checkpointer:    
+    async with AsyncSqliteSaver.from_conn_string("sqlite:///checkpoints_memory.sqlite") as checkpointer:    
+    # async with SqliteSaver.from_conn_string("sqlite:///checkpoints_memory.sqlite") as checkpointer:    
+        agent = AgentRag(llmService=llmService, vectorStoreService=vectorStoreService, checkpointer=checkpointer, index_name=default_files_index_name)
 
-inj = Injector(auto_bind=True)
-inj.binder.bind(EmbeddingsService, to=GPT4AllEmbeddingsProvider)
-inj.binder.bind(VectorStoreService, to=WeaviteVectorProvider)
-# inj.binder.bind(LlmService, to=OllamaLlmProvider)
-inj.binder.bind(LlmService, to=OpenAILlmProvider)
-# inj.binder.bind(ConfigService, to=ConfigService(configs))
+        response = await agent.graph.ainvoke({"messages": messages}, thread)
 
-attach_injector(app, inj)
+        answer = response['messages'][-1].content
+        return MessageModel(Type='AI', Content=answer)
+    
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
