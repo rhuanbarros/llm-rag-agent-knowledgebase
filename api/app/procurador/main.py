@@ -44,10 +44,6 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO,  # Define o nível de log
                     format='%(asctime)s - %(levelname)s - %(message)s',  # Define o formato da mensagem de log
                     stream=sys.stdout)  # Define a saída do log para stdout
-# filename='app.log',  # Define o arquivo onde os logs serão gravados
-# filemode='a')  # Define o modo de escrita do arquivo de log (append)
-
-
 
 logging.info('Initializing FastAPI')
 app = FastAPI(title="LLM RAG Knowledgebase API Server", description="API endpoints")
@@ -109,9 +105,6 @@ async def simple_message(
 async def chat(
         message: MessageModel,
     ):
-# async def chat(
-#         message: str = 'como faço para instalar o pje?',
-#     ):
     thread = {"configurable": {"thread_id": "2"}}
 
     messages = [HumanMessage(content=message.Content)]
@@ -120,18 +113,7 @@ async def chat(
     llmService = inj.get(LlmService)
     vectorStoreService = inj.get(VectorStoreService)
 
-    # checkpointer = SqliteSaver.from_conn_string(":memory:")
-    # async with AsyncSqliteSaver.from_conn_string("checkpoints_memory.sqlite") as checkpointer:    
-    #     agent = AgentRag(llmService=llmService, vectorStoreService=vectorStoreService, checkpointer=checkpointer, index_name=default_files_index_name)
-
-    #     response = await agent.graph.ainvoke({"messages": messages}, thread)
-
-    #     answer = response['messages'][-1].content
-    #     return MessageModel(Type='AI', Content=answer)
-    
-    # async with SqliteSaver.from_conn_string(":memory:") as checkpointer:    
-    async with AsyncSqliteSaver.from_conn_string("sqlite:///checkpoints_memory.sqlite") as checkpointer:    
-    # async with SqliteSaver.from_conn_string("sqlite:///checkpoints_memory.sqlite") as checkpointer:    
+    async with AsyncSqliteSaver.from_conn_string("checkpoints_memory.db") as checkpointer:    
         agent = AgentRag(llmService=llmService, vectorStoreService=vectorStoreService, checkpointer=checkpointer, index_name=default_files_index_name)
 
         response = await agent.graph.ainvoke({"messages": messages}, thread)
