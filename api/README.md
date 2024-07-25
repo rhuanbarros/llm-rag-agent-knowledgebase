@@ -60,5 +60,9 @@ docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ol
         - use to index the email with metadata and the cleaned version with report in multiple vectors
             https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/multi_vector/ 
     - index google drive documents
+    
+    
+# Useful links
+    - https://github.com/langchain-ai/langgraph/blob/main/examples/persistence_postgres.ipynb
 
 
