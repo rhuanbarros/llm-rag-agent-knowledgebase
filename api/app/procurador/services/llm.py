@@ -18,7 +18,7 @@ class OpenAILlmProvider(LlmService):
         from langchain_openai import ChatOpenAI
 
         if json:
-            # When using this option, the chat conversation needs to have a first system mjessage with the string 'json' in some place like 'Output in json'.
+            # When using this option, the chat conversation needs to have a system message with the string 'json' in some place like 'Output in json'.
             return ChatOpenAI(model=model_name, temperature=0.5).bind(
                 response_format={"type": "json_object"}
             )
